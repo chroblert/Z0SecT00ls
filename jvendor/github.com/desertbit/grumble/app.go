@@ -85,6 +85,11 @@ func New(c *Config) (a *App) {
 	a.flags.Bool("h", "help", false, "display help")
 	a.flags.BoolL("nocolor", false, "disable color output")
 
+	// JC0o0l Test
+	//a.flags.Int("t","test",0,"ddd")
+	//a.flags.StringSlice("s","stest",[]string{},"fff")
+
+	// JC0o0l End
 	// Register the user flags, if present.
 	if c.Flags != nil {
 		c.Flags(&a.flags)

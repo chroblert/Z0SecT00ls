@@ -64,6 +64,26 @@ func (f FlagMap) String(long string) string {
 	return s
 }
 
+// 210520: JC0o0l Add
+func (f FlagMap) StringSlice(long string) []string {
+	i := f[long]
+	if i == nil {
+		panic(fmt.Errorf("missing flag value: flag '%s' not registered", long))
+	}
+	// 210520: JC0o0l Modify
+	s := make([]string, 0)
+	for _, v := range i.Value.([]interface{}) {
+		s = append(s, v.(string))
+	}
+	//s, ok := i.Value.([]string)
+	//if !ok {
+	//	panic(fmt.Errorf("failed to assert flag '%s' to string", long))
+	//}
+	return s
+}
+
+// JC0o0l End
+
 // Bool returns the given flag value as boolean.
 // Panics if not present. Flags must be registered.
 func (f FlagMap) Bool(long string) bool {

@@ -71,6 +71,7 @@ func (f *Flags) register(
 	pf parseFlagFunc,
 ) {
 	// Validate.
+	// 校验名称是否有效
 	if len(short) > 1 {
 		panic(fmt.Errorf("invalid short flag: '%s': must be a single character", short))
 	} else if strings.HasPrefix(short, "-") {
@@ -85,6 +86,7 @@ func (f *Flags) register(
 
 	// Check, that both short and long are unique.
 	// Short flags are empty if not set.
+	// 校验名称是否冲突
 	for _, fi := range f.list {
 		if fi.Short != "" && short != "" && fi.Short == short {
 			panic(fmt.Errorf("flag shortcut '%s' registered twice", short))
@@ -111,6 +113,9 @@ func (f *Flags) register(
 	f.parsers = append(f.parsers, pf)
 }
 
+// flag ?== "-"+short
+// or
+// flag ?== "-"+long
 func (f *Flags) match(flag, short, long string) bool {
 	return (len(short) > 0 && flag == "-"+short) ||
 		(len(long) > 0 && flag == "--"+long)
@@ -128,18 +133,23 @@ Loop:
 			break Loop
 		}
 		args = args[1:]
+		// eg: --proxy=http://localhost:8080
 		pos := strings.Index(a, "=")
 		equalVal := ""
 		if pos > 0 {
 			equalVal = a[pos+1:]
 			a = a[:pos]
 		}
+		// a为标志，eg: --proxy
+		// equalVal为值，eg: http://localhost:8080
 
 		for _, p := range f.parsers {
+			//func(flag string, equalVal string, args []string, res FlagMap) ([]string, bool, error)
 			args, parsed, err = p(a, equalVal, args, res)
+			// 报错了，就返回
 			if err != nil {
 				return nil, err
-			} else if parsed {
+			} else if parsed { // 没报错，解析成功，就继续最外层循环
 				continue Loop
 			}
 		}
@@ -202,6 +212,72 @@ func (f *Flags) String(short, long, defaultValue, help string) {
 		})
 }
 
+//210520: JC0o0l Add
+// String registers a string flag.
+func (f *Flags) StringSlice(short, long string, defaultValue []string, help string) {
+	f.register(short, long, help, "stringSlice", true, defaultValue,
+		func(res FlagMap) {
+			res[long] = &FlagMapItem{
+				Value:     defaultValue,
+				IsDefault: true,
+			}
+		},
+		func(flag, equalVal string, args []string, res FlagMap) ([]string, bool, error) {
+			//defer func(){
+			//	jlog.Debug(args)
+			//}()
+			//jlog.Debug(flag,equalVal,args,res)
+			if !f.match(flag, short, long) {
+				return args, false, nil
+			}
+			if len(equalVal) > 0 {
+				//res[long] = &FlagMapItem{
+				//	Value:     trimQuotes(equalVal),
+				//	IsDefault: false,
+				//}
+				if res[long] != nil {
+					//res[long] = &FlagMapItem{
+					//	Value:     append(res[long].Value.([]interface{}),args[0]),
+					//	IsDefault: false,
+					//}
+					res[long].Value = append(res[long].Value.([]interface{}), trimQuotes(equalVal))
+					res[long].IsDefault = false
+				} else {
+					res[long] = &FlagMapItem{
+						Value:     make([]interface{}, 0),
+						IsDefault: false,
+					}
+					res[long].Value = append(res[long].Value.([]interface{}), trimQuotes(equalVal))
+					res[long].IsDefault = false
+				}
+				return args, true, nil
+			}
+			if len(args) == 0 {
+				return args, false, fmt.Errorf("missing string value for flag: %s", flag)
+			}
+			if res[long] != nil {
+				//res[long] = &FlagMapItem{
+				//	Value:     append(res[long].Value.([]interface{}),args[0]),
+				//	IsDefault: false,
+				//}
+				res[long].Value = append(res[long].Value.([]interface{}), args[0])
+				res[long].IsDefault = false
+			} else {
+				res[long] = &FlagMapItem{
+					Value:     make([]interface{}, 0),
+					IsDefault: false,
+				}
+				res[long].Value = append(res[long].Value.([]interface{}), args[0])
+				res[long].IsDefault = false
+			}
+
+			//jlog.Debug("grumble flags:",args)
+			args = args[1:]
+			return args, true, nil
+		})
+}
+
+//JC0o0l End
 // BoolL same as Bool, but without a shorthand.
 func (f *Flags) BoolL(long string, defaultValue bool, help string) {
 	f.Bool("", long, defaultValue, help)

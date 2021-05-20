@@ -56,6 +56,6 @@ func init() {
 	repeatCommand.Flags().StringSliceVarP(&reqHeaders, "header", "H", []string{}, "set request header.")
 	repeatCommand.Flags().StringVarP(&reqDataStr, "reqData", "d", "", "request body, u need set header manual")
 	repeatCommand.Flags().StringVarP(&proxy, "proxy", "", "", "proxy (default value is \" \")")
-	//repeatCommand.Flags().IntVarP(&repeatCount,"count","c",1,"repeat count")
+	repeatCommand.Flags().IntVarP(&repeatCount, "count", "c", 1, "repeat count")
 	RootCmd.AddCommand(repeatCommand)
 }

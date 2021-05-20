@@ -26,6 +26,7 @@ package grumble
 
 import (
 	"fmt"
+	"github.com/chroblert/jgoutils/jlog"
 	"time"
 )
 
@@ -72,6 +73,11 @@ func (f FlagMap) StringSlice(long string) []string {
 	}
 	// 210520: JC0o0l Modify
 	s := make([]string, 0)
+	fmt.Printf("%T,%v\n", i.Value, i.Value)
+	jlog.Debug(len(i.Value.([]string)))
+	if len(i.Value.([]string)) == 0 {
+		return s
+	}
 	for _, v := range i.Value.([]interface{}) {
 		s = append(s, v.(string))
 	}

@@ -3,6 +3,7 @@ package jcmd
 import (
 	"github.com/chroblert/Z0SecT00ls/jvendor/github.com/desertbit/grumble"
 	"github.com/chroblert/jgoutils/jlog"
+	"github.com/chroblert/jgoutils/jnet/jhttp"
 )
 
 var repeat2Command = &grumble.Command{
@@ -19,17 +20,34 @@ var repeat2Command = &grumble.Command{
 		f.String("u", "reqUrl", "", "request url with query string")
 		//repeatCommand.Flags().StringSliceVarP(&reqHeaders,"header","H",[]string{},"set request header.")
 		f.StringSlice("H", "header", []string{}, "set request header.")
-		f.String("d", "reqData", "", "request body, u need set header manual")
+		f.String("d", "reqDataStr", "", "request body, u need set header manual")
 		f.String("", "proxy", "", "proxy (default value is \" \")")
-		repeatCommand.Flags().IntVarP(&repeatCount, "count", "c", 1, "repeat count")
-	},
-	Args: func(a *grumble.Args) {
-		a.String("r", "request file")
+		f.Int("c", "count", 1, "repeat count")
 	},
 	Run: func(c *grumble.Context) error {
-		//jlog.Debug(c.Args.String("r"))
-		//jlog.Debug("Flag,",c.Flags.String("reqFile"))
 		jlog.Debug("Flag,", c.Flags.StringSlice("header"))
+		reqMethod := c.Flags.String("reqMethod")
+		reqFile := c.Flags.String("reqFile")
+		reqUrl := c.Flags.String("reqUrl")
+		reqDataStr := c.Flags.String("reqDataStr")
+		proxy := c.Flags.String("proxy")
+		repeatCount := c.Flags.Int("count")
+		isUseSSL := c.Flags.Bool("use-ssl")
+		// 执行命令
+		if reqMethod != "" {
+			jhttpobj := jhttp.New()
+			jhttpobj.SetReqMethod(reqMethod)
+			jhttpobj.SetURL(reqUrl)
+			jhttpobj.SetReqData(reqDataStr)
+			jhttpobj.SetProxy(proxy)
+			jhttpobj.Repeat(repeatCount)
+		} else {
+			jhttpobj := jhttp.New()
+			jhttpobj.InitWithFile(reqFile)
+			jhttpobj.SetIsUseSSL(isUseSSL)
+			jhttpobj.SetProxy(proxy)
+			jhttpobj.Repeat(repeatCount)
+		}
 		return nil
 	},
 	Completer: nil,

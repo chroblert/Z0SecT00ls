@@ -4,6 +4,8 @@ go 1.16
 
 require (
 	github.com/chroblert/jgoutils v0.0.0-20210519164039-991169a4d2c3 // indirect
+	github.com/desertbit/closer v2.0.1+incompatible // indirect
+	github.com/desertbit/grumble v1.1.1 // indirect
 	github.com/fatih/color v1.11.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect

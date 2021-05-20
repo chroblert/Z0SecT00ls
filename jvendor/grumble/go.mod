@@ -1,4 +1,4 @@
-module grumble
+module github.com/chroblert/Z0SecT00ls/jvendor/grumble
 
 go 1.12
 

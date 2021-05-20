@@ -19,7 +19,7 @@ var repeat2Command = &grumble.Command{
 		f.String("m", "reqMethod", "", "request method ,only GET or POST")
 		f.String("u", "reqUrl", "", "request url with query string")
 		//repeatCommand.Flags().StringSliceVarP(&reqHeaders,"header","H",[]string{},"set request header.")
-		f.StringSlice("H", "header", []string{}, "set request header.")
+		f.StringSlice("H", "header", []string{"xxx"}, "set request header.")
 		f.String("d", "reqDataStr", "", "request body, u need set header manual")
 		f.String("", "proxy", "", "proxy (default value is \" \")")
 		f.Int("c", "count", 1, "repeat count")

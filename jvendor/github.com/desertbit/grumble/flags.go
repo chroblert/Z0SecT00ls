@@ -218,9 +218,13 @@ func (f *Flags) StringSlice(short, long string, defaultValue []string, help stri
 	f.register(short, long, help, "stringSlice", true, defaultValue,
 		func(res FlagMap) {
 			res[long] = &FlagMapItem{
-				Value:     defaultValue,
+				Value:     []interface{}{},
 				IsDefault: true,
 			}
+			for _, v := range defaultValue {
+				res[long].Value = append(res[long].Value.([]interface{}), v)
+			}
+
 		},
 		func(flag, equalVal string, args []string, res FlagMap) ([]string, bool, error) {
 			//defer func(){

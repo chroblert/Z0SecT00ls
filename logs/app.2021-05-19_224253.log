@@ -1,0 +1,20 @@
+2021/05/19 22:42:32.3823 [D] jlog_core_fishlogger.go:114] 删除旧日志文件logs\app.2021-05-19_224011.log
+2021/05/19 22:42:32.3593 [D] jhttp_parse_file.go:26] 请求行:
+2021/05/19 22:42:32.3955 [D] jhttp_parse_file.go:33] [POST /api/hrm/forgotPassword/forgotPasswordTo*Next HTTP/1.1]
+2021/05/19 22:42:32.4100 [D] jhttp_parse_file.go:38] 请求头:
+2021/05/19 22:42:32.4146 [D] jhttp_parse_file.go:48] Host: www.baidu.com
+2021/05/19 22:42:32.4220 [D] jhttp_parse_file.go:48] Cookie: BIGipServerdcp_ucsps_8080_pool=193335562.36895.0000; BIGipServerdcp_netngx_8080_pool=3555266826.36895.0000; JSESSIONID=A2C94624278834E66EF68BD88DBBD2D5; __clusterSessionIDCookieName=731c532b-7462-486c-bbd5-93fdd83440f7; __clusterSessionCookieName=6278DCD2C262910594102C26155DAB3D; __randcode__=48094936-65c5-4eb3-b02d-6af64b88c7df
+2021/05/19 22:42:32.5321 [D] jhttp_parse_file.go:48] Content-Length: 197
+2021/05/19 22:42:32.5449 [D] jhttp_parse_file.go:48] User-Agent: Mozilla/5.0 (Linux; Android 10; Pixel 2 Build/QQ3A.200805.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/88.0.4324.152 Mobile Safari/537.36 E-Mobile7/7.0.43.20210303 Language/zh Qiyuesuo/physicalSDK
+2021/05/19 22:42:32.5738 [D] jhttp_parse_file.go:48] X-Requested-With: XMLHttpRequest
+2021/05/19 22:42:32.5811 [D] jhttp_parse_file.go:48] Content-Type: application/x-www-form-urlencoded; charset=utf-8
+2021/05/19 22:42:32.5972 [D] jhttp_parse_file.go:48] Origin: https://tudcp.bocfullertonbank.com
+2021/05/19 22:42:32.6049 [D] jhttp_parse_file.go:48] Sec-Fetch-Site: same-origin
+2021/05/19 22:42:32.6103 [D] jhttp_parse_file.go:48] Sec-Fetch-Mode: cors
+2021/05/19 22:42:32.6146 [D] jhttp_parse_file.go:48] Sec-Fetch-Dest: empty
+2021/05/19 22:42:32.6280 [D] jhttp_parse_file.go:48] Referer: https://tudcp.bocfullertonbank.com/spa/hrm/static4mobile/index.html
+2021/05/19 22:42:32.6380 [D] jhttp_parse_file.go:48] Accept-Encoding: gzip, deflate
+2021/05/19 22:42:32.6434 [D] jhttp_parse_file.go:48] Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+2021/05/19 22:42:32.6580 [D] jhttp_parse_file.go:48] Connection: close
+2021/05/19 22:42:32.6649 [D] jhttp_parse_file.go:45] blank line
+2021/05/19 22:42:32.6692 [D] jhttp_parse_file.go:54] map[Accept-Encoding:gzip, deflate Accept-Language:zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7 Connection:close Content-Length:197 Content-Type:application/x-www-form-urlencoded; charset=utf-8 Cookie:BIGipServerdcp_ucsps_8080_pool=193335562.36895.0000; BIGipServerdcp_netngx_8080_pool=3555266826.36895.0000; JSESSIONID=A2C94624278834E66EF68BD88DBBD2D5; __clusterSessionIDCookieName=731c532b-7462-486c-bbd5-93fdd83440f7; __clusterSessionCookieName=6278DCD2C262910594102C26155DAB3D; __randcode__=48094936-65c5-4eb3-b02d-6af64b88c7df Host:www.baidu.com Origin:https://tudcp.bocfullertonbank.com Referer:https://tudcp.bocfullertonbank.com/spa/hrm/static4mobile/index.html Sec-Fetch-Dest:empty Sec-Fetch-Mode:cors Sec-Fetch-Site:same-origin User-Agent:Mozilla/5.0 (Linux; Android 10; Pixel 2 Build/QQ3A.200805.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrom

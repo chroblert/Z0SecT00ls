@@ -15,6 +15,9 @@
 # vendor/
 
 # logs
-logs/
+logs
+logs/*
 
 req.txt
+.idea
+.idea/*

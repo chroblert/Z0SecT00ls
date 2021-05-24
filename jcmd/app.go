@@ -2,7 +2,11 @@ package jcmd
 
 import (
 	"github.com/chroblert/Z0SecT00ls/jvendor/github.com/desertbit/grumble"
+	"github.com/chroblert/jgoutils/jconfig"
+	"github.com/chroblert/jgoutils/jfile"
+	"github.com/chroblert/jgoutils/jlog"
 	"github.com/fatih/color"
+	"plugin"
 )
 
 var App = grumble.New(&grumble.Config{
@@ -22,13 +26,37 @@ var App = grumble.New(&grumble.Config{
 })
 
 func init() {
-	//jconfig.InitWithFile(App.Config().Name)
 	App.SetPrintASCIILogo(func(a *grumble.App) {
-		a.Println("                   _   _     ")
-		a.Println(" ___ ___ _ _ _____| |_| |___ ")
-		a.Println("| . |  _| | |     | . | | -_|")
-		a.Println("|_  |_| |___|_|_|_|___|_|___|")
-		a.Println("|___|                        ")
-		a.Println()
+		jlog.Warn("=============================")
+		jlog.Warn("        Z0SecT00ls           ")
+		jlog.Warn("=============================")
 	})
+	App.OnInit(func(a *grumble.App, flags grumble.FlagMap) error {
+		if flags.Bool("verbose") {
+			jlog.SetLevel(jlog.DEBUG)
+		}else{
+			jlog.SetLevel(jlog.INFO)
+		}
+		jlog.Debug("初始化配置文件")
+		jconfig.InitWithFile(cfgFile)
+		jlog.Debug("配置文件加载成功")
+		// 枚举并加载所有的插件
+		jlog.Debug("加载插件")
+		filenames,_ := jfile.GetFilenamesByDir("jplugin/jhttp")
+		for _,filename := range filenames{
+			jlog.Debug(filename)
+			plug,err := plugin.Open(filename)
+			if err != nil{
+				jlog.Fatal(err)
+			}
+			plugMain,err := plug.Lookup("Main")
+			if err != nil{
+				jlog.Fatal(err)
+			}
+			a.AddCommand(plugMain.(func() *grumble.Command)())
+		}
+
+		return nil
+	})
+
 }

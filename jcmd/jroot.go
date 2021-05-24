@@ -35,6 +35,4 @@ var RootCmd = &cobra.Command{
 func init(){
 	RootCmd.PersistentFlags().StringVar(&cfgFile,"config","conf/config.json","config file")
 	RootCmd.PersistentFlags().BoolVarP(&isVerbose,"verbose","v",false,"verbose msg")
-	//jlog.Debug(RootCmd.PersistentFlags().Lookup("config"))
-	//jlog.Debug(cfgFile)
 }

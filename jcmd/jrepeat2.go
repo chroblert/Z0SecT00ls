@@ -25,6 +25,8 @@ var repeat2Command = &grumble.Command{
 		f.Int("c", "count", 1, "repeat count")
 	},
 	Run: func(c *grumble.Context) error {
+		App.SetPrompt("Repeat >>")
+		jlog.Debug(App.Config().Prompt)
 		jlog.Debug("Flag,", c.Flags.StringSlice("header"))
 		reqMethod := c.Flags.String("reqMethod")
 		reqFile := c.Flags.String("reqFile")
@@ -54,5 +56,5 @@ var repeat2Command = &grumble.Command{
 }
 
 func init() {
-	App.AddCommand(repeat2Command)
+	//App.AddCommand(repeat2Command)
 }

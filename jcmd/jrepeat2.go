@@ -1,9 +1,9 @@
 package jcmd
 
 import (
-	"github.com/chroblert/Z0SecT00ls/jvendor/github.com/desertbit/grumble"
 	"github.com/chroblert/jgoutils/jlog"
 	"github.com/chroblert/jgoutils/jnet/jhttp"
+	"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble"
 )
 
 var repeat2Command = &grumble.Command{

@@ -1,14 +1,15 @@
 package jcmd
 
 import (
+	"github.com/chroblert/jgoutils/jfile"
+	"plugin"
+
 	//"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble"
-	"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble"
+	"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble2"
 	//"github.com/chroblert/jgoutils"
 	"github.com/chroblert/jgoutils/jconfig"
-	"github.com/chroblert/jgoutils/jfile"
 	"github.com/chroblert/jgoutils/jlog"
 	"github.com/fatih/color"
-	"plugin"
 )
 
 var App = grumble.New(&grumble.Config{
@@ -24,7 +25,9 @@ var App = grumble.New(&grumble.Config{
 		f.String("d", "directory", "DEFAULT", "set an alternative root directory path")
 		f.Bool("v", "verbose", false, "enable verbose mode")
 		f.String("c", "config", "conf/config.json", "config file")
+		f.Bool("p","use-plugin",false,"if use plugin ,then --use-plugin")
 	},
+	CurrentCommand: "app",
 })
 
 func init() {
@@ -39,23 +42,27 @@ func init() {
 		} else {
 			jlog.SetLevel(jlog.INFO)
 		}
+		// initial jconfig
 		jlog.Debug("初始化配置文件")
-		jconfig.InitWithFile(cfgFile)
+		jconfig.InitWithFile(flags.String("config"))
 		jlog.Debug("配置文件加载成功")
-		// 枚举并加载所有的插件
-		jlog.Debug("加载插件")
-		filenames, _ := jfile.GetFilenamesByDir("jplugin/jhttp")
-		for _, filename := range filenames {
-			jlog.Debug(filename)
-			plug, err := plugin.Open(filename)
-			if err != nil {
-				jlog.Fatal(err)
+		// load plugins
+		if flags.Bool("use-plugin"){
+			// 枚举并加载所有的插件
+			jlog.Debug("加载插件")
+			filenames, _ := jfile.GetFilenamesByDir("jplugin/jhttp")
+			for _, filename := range filenames {
+				jlog.Debug(filename)
+				plug, err := plugin.Open(filename)
+				if err != nil {
+					jlog.Fatal(err)
+				}
+				plugMain, err := plug.Lookup("Main")
+				if err != nil {
+					jlog.Fatal(err)
+				}
+				a.AddCommand(plugMain.(func() *grumble.Command)())
 			}
-			plugMain, err := plug.Lookup("Main")
-			if err != nil {
-				jlog.Fatal(err)
-			}
-			a.AddCommand(plugMain.(func() *grumble.Command)())
 		}
 
 		return nil

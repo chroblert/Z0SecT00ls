@@ -7,11 +7,11 @@ import (
 	"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble2"
 )
 
-var repeatCommand = &grumble.Command{
-	Name:      "repeat",
-	FullPath: "basic/http/repeat",
+var intrudeCommand = &grumble.Command{
+	Name:      "intrude",
+	FullPath: "basic/http/intrude",
 	Aliases:   nil,
-	Help:      "repeat http/https request ",
+	Help:      "intrude http/https request ",
 	LongHelp:  "",
 	HelpGroup: "Basic",
 	Usage:     "",
@@ -21,34 +21,26 @@ var repeatCommand = &grumble.Command{
 		f.String("m", "reqMethod", "", "request method ,only GET or POST")
 		f.String("u", "reqUrl", "", "request url with query string")
 		//repeatCommand.Flags().StringSliceVarP(&reqHeaders,"header","H",[]string{},"set request header.")
-		f.StringSlice("H", "header", []string{"xxx"}, "set request header.")
+		f.StringSlice("H", "header", []string{}, "set request header.")
 		f.String("d", "reqDataStr", "", "request body, u need set header manual")
 		f.String("", "proxy", "", "proxy (default value is \" \")")
-		f.Int("c", "count", 1, "repeat count")
+		//f.Int("c", "count", 1, "repeat count")
+		f.StringSlice("w","wordFile",[]string{}," set word file")
 	},
 	Run: func(c *grumble.Context) error {
-		jlog.Debug("Flag,", c.Flags.StringSlice("header"))
-		reqMethod := c.Flags.String("reqMethod")
+		wordFiles := c.Flags.StringSlice("wordFile")
 		reqFile := c.Flags.String("reqFile")
-		reqUrl := c.Flags.String("reqUrl")
-		reqDataStr := c.Flags.String("reqDataStr")
-		proxy := c.Flags.String("proxy")
-		repeatCount := c.Flags.Int("count")
-		isUseSSL := c.Flags.Bool("use-ssl")
-		// 执行命令
-		if reqMethod != "" {
-			jhttpobj := jhttp.New()
-			jhttpobj.SetReqMethod(reqMethod)
-			jhttpobj.SetURL(reqUrl)
-			jhttpobj.SetReqData(reqDataStr)
-			jhttpobj.SetProxy(proxy)
-			jhttpobj.Repeat(repeatCount)
-		} else {
+		if len(wordFiles) >0 && reqFile != ""{
 			jhttpobj := jhttp.New()
 			jhttpobj.InitWithFile(reqFile)
-			jhttpobj.SetIsUseSSL(isUseSSL)
-			jhttpobj.SetProxy(proxy)
-			jhttpobj.Repeat(repeatCount)
+			for _,v := range wordFiles{
+				jhttpobj.SetWordfiles(v)
+			}
+			jhttpobj.SetIsUseSSL(c.Flags.Bool("use-ssl"))
+			jhttpobj.SetProxy(c.Flags.String("proxy"))
+			jhttpobj.Intrude(false, func(statuscode int, headers map[string][]string, body []byte, err error) {
+				jlog.Info(statuscode)
+			})
 		}
 		return nil
 	},
@@ -64,6 +56,6 @@ func init() {
 	}else{
 		tmpCommands = jconfig.Get("jcommands").([]*grumble.Command)
 	}
-	tmpCommands = append(tmpCommands,repeatCommand)
+	tmpCommands = append(tmpCommands,intrudeCommand)
 	jconfig.Set("jcommands",tmpCommands)
 }

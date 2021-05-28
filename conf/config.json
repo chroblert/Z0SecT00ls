@@ -16,7 +16,7 @@
     "lv": 0,
     "isConsole": true,
     "maxStoreDays": 5,
-    "maxSize": 10240000,
+    "maxSize": 102400000,
     "logCount": 5,
     "bufferSize": 1024,
     "flushInterval":5,

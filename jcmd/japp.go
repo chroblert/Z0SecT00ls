@@ -1,15 +1,13 @@
 package jcmd
 
 import (
-	"github.com/chroblert/jgoutils/jfile"
-	"plugin"
-
-	//"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble"
-	"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble2"
-	//"github.com/chroblert/jgoutils"
+	_ "github.com/chroblert/Z0SecT00ls/japp"
 	"github.com/chroblert/jgoutils/jconfig"
+	"github.com/chroblert/jgoutils/jfile"
 	"github.com/chroblert/jgoutils/jlog"
+	"github.com/chroblert/jgoutils/jthirdutil/github.com/desertbit/grumble2"
 	"github.com/fatih/color"
+	"plugin"
 )
 
 var App = grumble.New(&grumble.Config{
@@ -31,6 +29,7 @@ var App = grumble.New(&grumble.Config{
 })
 
 func init() {
+	jconfig.Set("app",App)
 	App.SetPrintASCIILogo(func(a *grumble.App) {
 		jlog.Warn("=============================")
 		jlog.Warn("        Z0SecT00ls           ")
@@ -46,6 +45,12 @@ func init() {
 		jlog.Debug("初始化配置文件")
 		jconfig.InitWithFile(flags.String("config"))
 		jlog.Debug("配置文件加载成功")
+		// load commands
+		if jconfig.Get("jcommands") != nil{
+			for _,v := range jconfig.Get("jcommands").([]*grumble.Command) {
+				a.AddCommand(v)
+			}
+		}
 		// load plugins
 		if flags.Bool("use-plugin"){
 			// 枚举并加载所有的插件

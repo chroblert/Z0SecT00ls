@@ -39,7 +39,7 @@ var intrudeCommand = &grumble.Command{
 			jhttpobj.SetIsUseSSL(c.Flags.Bool("use-ssl"))
 			jhttpobj.SetProxy(c.Flags.String("proxy"))
 			jhttpobj.Intrude(false, func(statuscode int, headers map[string][]string, body []byte, err error) {
-				jlog.Info(statuscode)
+				jlog.Info("statuscode:",statuscode)
 			})
 		}
 		return nil

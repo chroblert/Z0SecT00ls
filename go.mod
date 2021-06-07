@@ -3,7 +3,7 @@ module github.com/chroblert/Z0SecT00ls
 go 1.16
 
 require (
-	github.com/chroblert/jgoutils v0.1.17
+	github.com/chroblert/jgoutils v0.1.18
 	github.com/fatih/color v1.12.0
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
